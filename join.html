@@ -22,7 +22,15 @@
 <div class="field"><label for="country">Negara *</label><input id="country" name="country" required value="Indonesia" maxlength="60"></div>
 <div class="field"><label for="goal">Tujuan bergabung *</label><select id="goal" name="goal" required><option value="">Pilih salah satu</option><option>Belajar money management</option><option>Mengembangkan psikologi trading</option><option>Membangun disiplin dan jurnal</option><option>Belajar materi teknikal pendukung</option><option>Bergabung dengan komunitas</option></select></div>
 <div class="field"><label for="note">Catatan (opsional)</label><textarea id="note" name="note" maxlength="500" placeholder="Ceritakan singkat tentang dirimu..."></textarea></div>
-<label class="checkline"><input type="checkbox" name="agreement" value="yes" required><span>Saya memahami bahwa MPS adalah komunitas edukasi, bukan penyedia sinyal, dan tidak menjanjikan keuntungan. Saya setuju informasi di atas digunakan untuk keperluan proses pendaftaran member.</span></label>
+<label class="checkline">
+  <input type="checkbox" name="agreement" value="yes" required>
+  <span>
+    Saya memahami bahwa MPS adalah komunitas edukasi, bukan penyedia sinyal, dan tidak menjanjikan keuntungan. Saya menyetujui penggunaan informasi untuk proses pendaftaran serta telah membaca
+    <a href="terms.html" target="_blank">Syarat & Ketentuan</a>
+    dan
+    <a href="privacy.html" target="_blank">Kebijakan Privasi</a>.
+  </span>
+</label>
 <button class="btn btn-gold mt-3" type="submit">Kirim Pendaftaran</button>
 <div id="formMessage" class="form-message" role="status" aria-live="polite"></div>
 <pre id="registrationSummary" class="notice" hidden style="white-space:pre-wrap"></pre>
