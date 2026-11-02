@@ -9,8 +9,8 @@ window.MPS_CONFIG = {
     year: 2026
   },
   links: {
-    telegram: "https://t.me/PLACEHOLDER_MPS",
-    joinTelegram: "https://t.me/PLACEHOLDER_MPS",
+    telegram: "https://t.me/Ndhisolasi",
+joinTelegram: "https://t.me/Ndhisolasi",
     whatsapp: "https://wa.me/6280000000000",
     instagram: "https://instagram.com/PLACEHOLDER_MPS",
     tiktok: "https://www.tiktok.com/@PLACEHOLDER_MPS",
