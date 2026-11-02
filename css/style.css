@@ -100,3 +100,35 @@
 body{display:flex;flex-direction:column;min-height:100vh}
 .navbar{order:-2}
 .mps-gallery{order:-1}
+/* MPS CAROUSEL RESPONSIVE */
+.mps-slider {
+  width: min(100%, 850px);
+  aspect-ratio: 16 / 10;
+  display: flex;
+  align-items: center;
+}
+
+.mps-slides {
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+.mps-slides img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  max-height: 520px;
+  object-fit: contain;
+  background: #101010;
+}
+
+@media (max-width: 600px) {
+  .mps-slider {
+    aspect-ratio: 4 / 5;
+  }
+
+  .mps-slides img {
+    max-height: 440px;
+  }
+}
