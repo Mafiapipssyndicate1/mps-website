@@ -4,3 +4,83 @@
 @media(max-width:900px){.nav-toggle{display:block}.nav-links{display:none;position:absolute;top:75px;left:0;right:0;background:#0b0b0b;border-bottom:1px solid var(--line);padding:15px 22px 22px;flex-direction:column;align-items:flex-start;gap:13px}.nav-links.open{display:flex}.grid-3{grid-template-columns:1fr 1fr}.navbar{padding:0 20px}}
 @media(max-width:620px){.container{width:min(100% - 30px,var(--max))}.hero{min-height:560px;padding:70px 18px}.grid-2,.grid-3,.split{grid-template-columns:1fr}section{padding:58px 0}.card{padding:22px}.form-card{padding:20px}.tagline{letter-spacing:3px}.footer-links{gap:12px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+/* MPS CAROUSEL */
+.mps-slider {
+  position: relative;
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto 18px;
+  overflow: hidden;
+  border: 1px solid #b99142;
+  border-radius: 14px;
+  background: #151515;
+}
+
+.mps-slides {
+  display: flex;
+  width: 100%;
+  transition: transform .6s ease;
+}
+
+.mps-slides img {
+  flex: 0 0 100%;
+  min-width: 100%;
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+  object-fit: contain;
+  display: block;
+}
+
+.mps-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  border: 0;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  background: rgba(0,0,0,.75);
+  color: #e2bd69;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.mps-prev { left: 12px; }
+.mps-next { right: 12px; }
+
+.mps-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px;
+}
+
+.mps-dot {
+  width: 9px;
+  height: 9px;
+  border: 0;
+  border-radius: 50%;
+  background: #777;
+  cursor: pointer;
+}
+
+.mps-dot.active {
+  background: #d6ad55;
+}
+
+.mps-gallery-note {
+  text-align: center;
+  color: #aaa;
+  font-size: 12px;
+  margin-bottom: 22px;
+}
+
+@media (max-width: 600px) {
+  .mps-gallery { padding: 45px 0; }
+  .mps-arrow {
+    width: 32px;
+    height: 32px;
+  }
+}
