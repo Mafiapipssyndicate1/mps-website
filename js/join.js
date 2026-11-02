@@ -1,10 +1,9 @@
 (() => {
-  const cfg = window.MPS_CONFIG || {};
   const form = document.getElementById("joinForm");
   if (!form) return;
 
   const message = document.getElementById("formMessage");
-  const summary = document.getElementById("registrationSummary");
+  const a = document.getElementById("registrationSummary");
   const copyBtn = document.getElementById("copySummary");
   const telegramBtn = document.getElementById("openTelegram");
 
