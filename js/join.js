@@ -1,4 +1,3 @@
-
 (() => {
   const cfg = window.MPS_CONFIG || {};
   const form = document.getElementById("joinForm");
