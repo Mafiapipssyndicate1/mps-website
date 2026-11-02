@@ -84,3 +84,39 @@
     height: 32px;
   }
 }
+/* MPS WARNING BOX */
+.mps-warning {
+  background: rgba(120, 20, 20, 0.07);
+  border: 1px solid rgba(220, 38, 38, 0.55);
+  border-left: 4px solid #dc2626;
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin: 24px 0;
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.mps-warning h3 {
+  color: #ef4444;
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin: 0 0 12px;
+}
+
+.mps-warning p,
+.mps-warning li {
+  font-size: 0.84rem;
+}
+
+.mps-warning .warning-highlight {
+  color: #ef4444;
+  font-weight: 800;
+}
+
+.mps-warning ul {
+  padding-left: 20px;
+}
+
+.mps-warning li {
+  margin-bottom: 6px;
+}
