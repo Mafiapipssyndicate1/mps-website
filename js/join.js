@@ -1,61 +1,142 @@
 (() => {
+  const cfg = window.MPS_CONFIG || {};
+
+  // ===== ISI BAGIAN INI =====
+  const TELEGRAM_URL = ""; // contoh: "https://t.me/usernameadmin"
+  // ==========================
+
+  const links = cfg.links || {};
+  const tgUrl = TELEGRAM_URL || links.telegram || links.telegramGroup || links.@Ndhisolasi || "";
+
+  const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfRZ1f6MLw-SgtV3VG20qWSnwj7PP15X-F7b27L-EbfiSdqEg/formResponse";
+
+  const ENTRY = {
+    nickname: "entry.478958051",
+    telegram: "entry.408949378",
+    goal: "entry.1510635739",
+    agreement: "entry.659881750",
+    confirm: "entry.1414759871",
+    country: "", // isi "entry.xxxx" setelah pertanyaan Negara dibuat di Google Form
+    note: ""     // isi "entry.xxxx" setelah pertanyaan Catatan dibuat di Google Form
+  };
+
+  const AGREEMENTS = [
+    "MPS merupakan komunitas edukasi dan diskusi trading.",
+    "MPS bukan penyedia sinyal trading.",
+    "MPS tidak menjanjikan keuntungan atau hasil trading tertentu.",
+    "Trading memiliki risiko kehilangan modal.",
+    "Saya bersedia menjaga etika dan menghormati sesama anggota komunitas."
+  ];
+
+  const GOAL_MAP = {
+    "Belajar money management": "Belajar Money Management",
+    "Mengembangkan psikologi trading": "Mengembangkan Psikologi Trading",
+    "Membangun disiplin dan jurnal": "Membangun Disiplin dan Jurnal Trading",
+    "Belajar materi teknikal pendukung": "Belajar Materi Teknikal Pendukung",
+    "Bergabung dengan komunitas": "Bergabung dengan komunitas"
+  };
+
   const form = document.getElementById("joinForm");
   if (!form) return;
 
-  const message = document.getElementById("formMessage");
-  const submitBtn = form.querySelector('[type="submit"]');
+  const msg = document.getElementById("formMessage");
+  const summaryEl = document.getElementById("registrationSummary");
+  const copyBtn = document.getElementById("copySummary");
+  const tgBtn = document.getElementById("openTelegram");
+  const submitBtn = form.querySelector('button[type="submit"]');
 
-  // Sembunyikan elemen lama
-  ["registrationSummary", "copySummary", "openTelegram"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = "none";
-  });
+  let lastSummary = "";
+  let lastTgLink = "";
 
-  // Satu tombol Daftar + logo Telegram
-  if (submitBtn) {
-    submitBtn.style.display = "inline-flex";
-    submitBtn.style.alignItems = "center";
-    submitBtn.style.justifyContent = "center";
-    submitBtn.innerHTML =
-      '<svg width="22" height="22" viewBox="0 0 24 24" style="margin-right:8px">' +
-      '<circle cx="12" cy="12" r="12" fill="#229ED9"/>' +
-      '<path fill="#fff" d="M5.4 11.9l11.5-4.4c.5-.2 1 .1.8.9l-2 9.2c-.1.7-.6.9-1.1.5l-3-2.2-1.4 1.4c-.2.2-.3.3-.6.3l.2-3.1 5.6-5c.2-.2 0-.3-.4-.1l-6.9 4.3-3-.9c-.6-.2-.6-.6.3-.9z"/>' +
-      '</svg><span>Daftar via Telegram</span>';
+  function show(type, text) {
+    msg.className = "form-message show " + type;
+    msg.textContent = text;
   }
 
-  const show = (kind, text) => {
-    if (!message) return;
-    message.hidden = false;
-    message.className = `form-message show ${kind}`;
-    message.textContent = text;
-  };
+  function telegramLink(url, text) {
+    // Link ke akun pribadi (t.me/username) bisa langsung berisi pesan
+    if (/^https:\/\/t\.me\/[A-Za-z0-9_]{5,}$/.test(url)) {
+      return url + "?text=" + encodeURIComponent(text);
+    }
+    return url;
+  }
 
-  form.addEventListener("submit", event => {
-    event.preventDefault();
-    if (!form.reportValidity()) return;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-    const data = Object.fromEntries(new FormData(form).entries());
-    const username = String(data.telegram || "").trim().replace(/^@/, "");
+    const data = {
+      nickname: form.nickname.value.trim(),
+      telegram: form.telegram.value.trim(),
+      country: form.country.value.trim(),
+      goal: form.goal.value,
+      note: form.note.value.trim()
+    };
 
-    if (!/^[A-Za-z0-9_]{3,32}$/.test(username)) {
-      show("error", "Username Telegram harus 3–32 karakter.");
-      return;
+    lastSummary =
+      "PENDAFTARAN MEMBER MPS\n" +
+      "Nama panggilan: " + data.nickname + "\n" +
+      "Telegram: " + data.telegram + "\n" +
+      "Negara: " + data.country + "\n" +
+      "Tujuan bergabung: " + data.goal + "\n" +
+      "Catatan: " + (data.note || "-");
+
+    lastTgLink = tgUrl ? telegramLink(tgUrl, lastSummary) : "";
+
+    // Buka tab Telegram sekarang (saat tombol ditekan) supaya tidak diblokir browser
+    const tab = lastTgLink ? window.open("", "_blank") : null;
+
+    // Salin ringkasan ke clipboard
+    try { navigator.clipboard.writeText(lastSummary); } catch (err) {}
+
+    // Siapkan data untuk Google Form
+    const body = new URLSearchParams();
+    body.append(ENTRY.nickname, data.nickname);
+    body.append(ENTRY.telegram, data.telegram);
+    body.append(ENTRY.goal, GOAL_MAP[data.goal] || data.goal);
+    if (ENTRY.country) body.append(ENTRY.country, data.country);
+    if (ENTRY.note && data.note) body.append(ENTRY.note, data.note);
+    AGREEMENTS.forEach((a) => body.append(ENTRY.agreement, a));
+    body.append(ENTRY.confirm, "Opsi 1");
+
+    submitBtn.disabled = true;
+    show("info", "Mengirim pendaftaran...");
+
+    let ok = true;
+    try {
+      await fetch(FORM_URL, { method: "POST", mode: "no-cors", body: body });
+    } catch (err) {
+      ok = false;
+    }
+    submitBtn.disabled = false;
+
+    summaryEl.textContent = lastSummary;
+    summaryEl.hidden = false;
+    copyBtn.hidden = false;
+    if (lastTgLink) tgBtn.hidden = false;
+
+    if (ok) {
+      show("success", lastTgLink
+        ? "Pendaftaran terkirim dan ringkasan sudah disalin. Membuka Telegram MPS..."
+        : "Pendaftaran terkirim dan ringkasan sudah disalin.");
+    } else {
+      show("error", "Pengiriman gagal. Periksa koneksi lalu coba lagi, atau kirim ringkasan di bawah ke admin.");
     }
 
-    const text = [
-      "PENDAFTARAN MEMBER MPS",
-      `Nama panggilan: ${data.nickname || "-"}`,
-      `Telegram: @${username}`,
-      `Negara: ${data.country || "-"}`,
-      `Tujuan bergabung: ${data.goal || "-"}`,
-      `Catatan: ${data.note || "-"}`
-    ].join("\n");
+    if (tab && lastTgLink) {
+      tab.location.href = lastTgLink;
+    }
+  });
 
-    if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
+  copyBtn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(lastSummary);
+      show("success", "Ringkasan disalin.");
+    } catch (err) {
+      show("error", "Gagal menyalin. Salin manual dari kotak ringkasan.");
+    }
+  });
 
-    show("success", "Mengarahkan ke Telegram MPS...");
-    window.location.href =
-      "https://t.me/Ndhisolasi?text=" + encodeURIComponent(text);
+  tgBtn.addEventListener("click", () => {
+    if (lastTgLink) window.open(lastTgLink, "_blank", "noopener");
   });
 })();
-
