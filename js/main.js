@@ -47,3 +47,54 @@
   const year = document.getElementById("year");
   if (year) year.textContent = `© ${new Date().getFullYear()} ${(cfg.brand && cfg.brand.name) || "Mafia Pips Syndicate"}. All Rights Reserved.`;
 })();
+// MPS AUTOMATIC IMAGE SLIDER
+document.addEventListener("DOMContentLoaded", function () {
+  const slider = document.getElementById("mpsSlider");
+  if (!slider) return;
+
+  const slides = slider.querySelector(".mps-slides");
+  const images = slides.querySelectorAll("img");
+  const dotsContainer = slider.querySelector(".mps-dots");
+  const prev = slider.querySelector(".mps-prev");
+  const next = slider.querySelector(".mps-next");
+
+  let current = 0;
+  let timer;
+
+  images.forEach((_, index) => {
+    const dot = document.createElement("button");
+    dot.className = "mps-dot";
+    dot.setAttribute("aria-label", "Gambar " + (index + 1));
+    dot.addEventListener("click", () => showSlide(index));
+    dotsContainer.appendChild(dot);
+  });
+
+  const dots = dotsContainer.querySelectorAll(".mps-dot");
+
+  function showSlide(index) {
+    current = (index + images.length) % images.length;
+    slides.style.transform = `translateX(-${current * 100}%)`;
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("active", i === current);
+    });
+  }
+
+  function startAuto() {
+    clearInterval(timer);
+    timer = setInterval(() => showSlide(current + 1), 4000);
+  }
+
+  prev.addEventListener("click", () => {
+    showSlide(current - 1);
+    startAuto();
+  });
+
+  next.addEventListener("click", () => {
+    showSlide(current + 1);
+    startAuto();
+  });
+
+  showSlide(0);
+  startAuto();
+});
