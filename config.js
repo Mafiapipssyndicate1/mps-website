@@ -11,9 +11,6 @@ window.MPS_CONFIG = {
   links: {
     telegram: "https://t.me/Ndhisolasi",
 joinTelegram: "https://t.me/Ndhisolasi",
-    whatsapp: "https://wa.me/6280000000000",
-    instagram: "https://instagram.com/PLACEHOLDER_MPS",
-    tiktok: "https://www.tiktok.com/@PLACEHOLDER_MPS",
     email: "mailto:ndhisolasi.music@gmail.com"
   },
   form: {
