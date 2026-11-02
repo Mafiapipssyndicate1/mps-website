@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
+<title id="title">MPS monogram</title>
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7df8a"/><stop offset="1" stop-color="#b88a24"/></linearGradient></defs>
+<path d="M120 8 220 65v110l-100 57L20 175V65z" fill="#0b0b0b" stroke="url(#g)" stroke-width="5"/>
+<path d="M55 165V76h20l45 55 45-55h20v89h-23v-53l-42 49-42-49v53z" fill="url(#g)"/>
+<path d="M78 188h84" stroke="#f7df8a" stroke-width="3" stroke-linecap="round"/>
+</svg>

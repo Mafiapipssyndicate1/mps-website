@@ -1,0 +1,27 @@
+/* MPS public configuration.
+   Replace placeholder links before publishing. Never put passwords or secret API keys here. */
+window.MPS_CONFIG = {
+  brand: {
+    name: "Mafia Pips Syndicate",
+    short: "MPS",
+    tagline: "TRADE WITH DISCIPLINE.",
+    quote: "Discipline First. Survival Always.",
+    year: 2026
+  },
+  links: {
+    telegram: "https://t.me/PLACEHOLDER_MPS",
+    joinTelegram: "https://t.me/PLACEHOLDER_MPS",
+    whatsapp: "https://wa.me/6280000000000",
+    instagram: "https://instagram.com/PLACEHOLDER_MPS",
+    tiktok: "https://www.tiktok.com/@PLACEHOLDER_MPS",
+    email: "mailto:kontak@example.com"
+  },
+  form: {
+    endpoint: "",
+    fallbackNote: "Pendaftaran online belum terhubung. Silakan salin ringkasan pendaftaran dan hubungi admin melalui Telegram."
+  },
+  rebate: {
+    maxPercent: 70,
+    disclaimer: "Rebate maksimal dihitung dari komisi IB yang benar-benar diterima MPS dari broker. Persentase aktual bergantung pada jenis akun, ketentuan program, dan persetujuan broker."
+  }
+};
