@@ -69,7 +69,7 @@
         latestSummary + "\n\nKirim ke admin MPS: @Ndhisolasi"
       );
 
-    window.open(shareUrl, "_blank");
+    window.open("https://t.me/Ndhisolasi", "_blank");
   });
 })();
 
