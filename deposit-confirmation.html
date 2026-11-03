@@ -60,7 +60,7 @@
       </div>
       <div class="field">
         <label for="depositAmount">Nominal deposit pertama (IDR) *</label>
-        <input id="depositAmount" name="depositAmount" type="text" required inputmode="numeric" autocomplete="off" maxlength="19" placeholder="Contoh: 500.000">
+        <input id="depositAmount" name="depositAmount" type="text" required inputmode="numeric" autocomplete="off" maxlength="19" placeholder="Contoh: 500.000" oninput="this.value = this.value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')">
         <small class="muted">Nominal akan otomatis menggunakan titik pemisah ribuan. Contoh: 1.000.000.</small>
       </div>
       <div class="field">
