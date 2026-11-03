@@ -8,6 +8,13 @@
   var maxBytes = ((cfg.depositForm && cfg.depositForm.maxFileSizeMB) || 5) * 1024 * 1024;
   var message = document.getElementById("depositMessage");
   var button = document.getElementById("submitDeposit");
+  var amountInput = document.getElementById("depositAmount");
+
+  // Tampilkan pemisah ribuan dengan titik, tetapi kirim angka murni ke Google Sheets.
+  amountInput.addEventListener("input", function () {
+    var digits = this.value.replace(/\D/g, "");
+    this.value = digits.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  });
 
   function show(type, text) {
     message.className = "form-message show " + type;
@@ -42,7 +49,7 @@
       telegram: document.getElementById("telegram").value.trim(),
       mt5Login: document.getElementById("mt5Login").value.trim(),
       accountType: document.getElementById("accountType").value,
-      depositAmount: document.getElementById("depositAmount").value,
+      depositAmount: amountInput.value.replace(/\./g, ""),
       depositDate: document.getElementById("depositDate").value,
       proofName: file.name,
       proofMimeType: file.type,
@@ -51,7 +58,8 @@
     };
 
     if (!payload.memberName || !payload.telegram || !payload.mt5Login || !payload.accountType ||
-        !payload.depositAmount || !payload.depositDate || !document.getElementById("consent").checked) {
+        !payload.depositAmount || !/^[0-9]+$/.test(payload.depositAmount) ||
+        !payload.depositDate || !document.getElementById("consent").checked) {
       show("error", "Periksa kembali semua kolom wajib dan persetujuan.");
       return;
     }
