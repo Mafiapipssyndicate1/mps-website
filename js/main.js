@@ -39,13 +39,13 @@
     el.textContent = (cfg.rebate && cfg.rebate.disclaimer) || "";
   });
   document.querySelectorAll("[data-brand='name']").forEach(el => {
-    el.textContent = (cfg.brand && cfg.brand.name) || "Mafia Pips Syndicate";
+    el.textContent = (cfg.brand && cfg.brand.name) || "Market Psychology Society";
   });
   document.querySelectorAll("[data-brand='tagline']").forEach(el => {
     el.textContent = (cfg.brand && cfg.brand.tagline) || "TRADE WITH DISCIPLINE.";
   });
   const year = document.getElementById("year");
-  if (year) year.textContent = `© ${new Date().getFullYear()} ${(cfg.brand && cfg.brand.name) || "Mafia Pips Syndicate"}. All Rights Reserved.`;
+  if (year) year.textContent = `© ${new Date().getFullYear()} ${(cfg.brand && cfg.brand.name) || "Market Psychology Society"}. All Rights Reserved.`;
 })();
 // MPS AUTOMATIC IMAGE SLIDER
 document.addEventListener("DOMContentLoaded", function () {
