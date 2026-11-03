@@ -2,7 +2,7 @@
    Replace placeholder links before publishing. Never put passwords or secret API keys here. */
 window.MPS_CONFIG = {
   brand: {
-    name: "Mafia Pips Syndicate",
+    name: "Market Psychology Society",
     short: "MPS",
     tagline: "TRADE WITH DISCIPLINE.",
     quote: "Discipline First. Survival Always.",
