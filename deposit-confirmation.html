@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Formulir konfirmasi deposit untuk administrasi IB Market Psychology Society.">
+  <meta name="theme-color" content="#080808">
+  <title>Konfirmasi Deposit | Market Psychology Society</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar" aria-label="Navigasi utama">
+  <a href="index.html" class="nav-brand"><img src="assets/logo.svg" alt="">MPS</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false" aria-controls="navLinks">☰</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li>
+    <li><a href="system.html">Core System</a></li><li><a href="education.html">Education</a></li>
+    <li><a href="membership.html">Membership</a></li><li><a href="rewards.html">Rewards</a></li>
+    <li><a href="rebate.html">Rebate</a></li><li><a href="join.html">Join</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<header class="page-head">
+  <div class="eyebrow">IB Account Administration</div>
+  <h1>Konfirmasi Deposit</h1>
+  <p>Formulir khusus member MPS untuk membantu admin memeriksa akun IB dan administrasi program rebate.</p>
+</header>
+
+<section>
+  <div class="container">
+    <div class="notice">
+      <strong>Perlu diketahui:</strong> Formulir ini bukan syarat untuk bergabung dengan komunitas MPS. Isi hanya jika kamu ingin mengajukan verifikasi akun untuk program IB/rebate MPS. Status pengajuan awal adalah menunggu pemeriksaan admin.
+    </div>
+    <form class="form-card mt-4" id="depositForm">
+      <div class="field">
+        <label for="memberName">Nama member *</label>
+        <input id="memberName" name="memberName" required maxlength="80" autocomplete="name" placeholder="Nama sesuai data member MPS">
+      </div>
+      <div class="field">
+        <label for="telegram">Username Telegram *</label>
+        <input id="telegram" name="telegram" required maxlength="40" placeholder="@username">
+      </div>
+      <div class="field">
+        <label for="mt5Login">Nomor login MT5 *</label>
+        <input id="mt5Login" name="mt5Login" required inputmode="numeric" pattern="[0-9]{4,20}" maxlength="20" placeholder="Contoh: 12345678">
+      </div>
+      <div class="field">
+        <label for="accountType">Jenis akun trading *</label>
+        <select id="accountType" name="accountType" required>
+          <option value="">Pilih jenis akun</option>
+          <option>Standard</option>
+          <option>Standard Cent</option>
+          <option>Pro</option>
+          <option>Raw Spread</option>
+          <option>Zero</option>
+          <option>Lainnya</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="depositAmount">Nominal deposit pertama (IDR) *</label>
+        <input id="depositAmount" name="depositAmount" type="number" required min="1" step="1" inputmode="numeric" placeholder="Contoh: 500000">
+      </div>
+      <div class="field">
+        <label for="depositDate">Tanggal deposit pertama *</label>
+        <input id="depositDate" name="depositDate" type="date" required>
+      </div>
+      <div class="field">
+        <label for="proof">Bukti deposit (JPG, PNG, atau WEBP; maks. 5 MB) *</label>
+        <input id="proof" name="proof" type="file" accept="image/jpeg,image/png,image/webp" required>
+        <small class="muted">Pastikan bukti menunjukkan transaksi deposit yang relevan. Tutupi informasi pribadi yang tidak diperlukan sebelum mengunggah.</small>
+      </div>
+      <div class="field" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden">
+        <label for="website">Jangan isi kolom ini</label>
+        <input id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+      <label class="checkline">
+        <input type="checkbox" id="consent" required>
+        <span>Saya menyatakan data yang dikirim benar dan mengizinkan MPS menggunakannya untuk verifikasi akun IB serta administrasi program rebate. Saya memahami bahwa MPS tidak meminta password, OTP, atau akses ke akun trading saya. Saya telah membaca <a href="privacy.html" target="_blank" rel="noopener">Kebijakan Privasi</a>.</span>
+      </label>
+      <button class="btn btn-gold mt-3" type="submit" id="submitDeposit">Kirim Konfirmasi</button>
+      <div class="form-message" id="depositMessage" role="status" aria-live="polite"></div>
+      <p class="muted" style="font-size:11px">Jangan pernah mengunggah password MT5, password investor, OTP, data kartu, atau informasi login rahasia. Pengiriman hanya akan aktif setelah koneksi penyimpanan resmi dipasang.</p>
+    </form>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-brand" data-brand="name">Market Psychology Society</div>
+  <div class="footer-tag" data-brand="tagline">TRADE WITH DISCIPLINE.</div>
+  <div class="footer-quote">“Discipline First. Survival Always.”</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a><a href="membership.html">Membership</a>
+    <a href="rebate.html">Rebate</a><a href="join.html">Join</a>
+    <a href="terms.html">Syarat &amp; Ketentuan</a><a href="privacy.html">Kebijakan Privasi</a>
+  </div>
+  <p class="footer-disclaimer">MPS merupakan komunitas edukasi dan diskusi trading independen, bukan broker atau penasihat keuangan. Trading memiliki risiko tinggi. MPS tidak menjamin keuntungan.</p>
+  <div class="footer-copy" id="year">© 2026 Market Psychology Society. All Rights Reserved.</div>
+</footer>
+<script src="config.js"></script>
+<script src="js/main.js"></script>
+<script src="js/deposit.js"></script>
+</body>
+</html>
