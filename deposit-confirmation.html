@@ -60,7 +60,8 @@
       </div>
       <div class="field">
         <label for="depositAmount">Nominal deposit pertama (IDR) *</label>
-        <input id="depositAmount" name="depositAmount" type="number" required min="1" step="1" inputmode="numeric" placeholder="Contoh: 500000">
+        <input id="depositAmount" name="depositAmount" type="text" required inputmode="numeric" autocomplete="off" maxlength="19" placeholder="Contoh: 500.000">
+        <small class="muted">Nominal akan otomatis menggunakan titik pemisah ribuan. Contoh: 1.000.000.</small>
       </div>
       <div class="field">
         <label for="depositDate">Tanggal deposit pertama *</label>
