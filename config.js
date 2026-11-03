@@ -17,6 +17,10 @@ joinTelegram: "https://t.me/Ndhisolasi",
     endpoint: "",
     fallbackNote: "Pendaftaran online belum terhubung. Silakan salin ringkasan pendaftaran dan hubungi admin melalui Telegram."
   },
+  depositForm: {
+    endpoint: "",
+    maxFileSizeMB: 5
+  },
   rebate: {
     maxPercent: 70,
     disclaimer: "Rebate maksimal dihitung dari komisi IB yang benar-benar diterima MPS dari broker. Persentase aktual bergantung pada jenis akun, ketentuan program, dan persetujuan broker."
