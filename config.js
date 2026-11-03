@@ -18,7 +18,7 @@ joinTelegram: "https://t.me/Ndhisolasi",
     fallbackNote: "Pendaftaran online belum terhubung. Silakan salin ringkasan pendaftaran dan hubungi admin melalui Telegram."
   },
   depositForm: {
-    endpoint: "",
+    endpoint: "https://script.google.com/macros/s/AKfycbzJcnXkf_jRWEU13SaaGGXmFWHnpPRkIy81fmvrQBTzJmaDEJgFpeEH4GSOqAn4-_TN/exec",
     maxFileSizeMB: 5
   },
   rebate: {
