@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Chrono Heatmap</title>
+<title>MPS Market Pulse</title>
 <style>
 :root{--bg:#f4f4f1;--fg:#1a1a18;--mut:#6f6e68;--chip:#e6e5df;--neu:#dcdde3;--neufg:#3a3d4a;--gm:#cfe6d8;--gmf:#14532d;--rm:#f1d2d2;--rmf:#7f1d1d;--on:#1a1a18;--onfg:#fff;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -48,7 +48,7 @@ function sa(s){const x=[0,1,2].map(w=>st(w,s));if(x.some(v=>!v))return null;cons
 function cell(s,f){if(!s)return'<div class="c"><div class="p">–</div></div>';
 const cls=f||(s.pct>=TH?(s.up?'u':'dn'):'');return`<div class="c ${cls}"><div class="d">${s.up?'UP':'DOWN'}</div><div class="p">${s.pct.toFixed(1)}%</div><div class="n">N ${s.neu.toFixed(0)}% · n=${s.n}</div></div>`}
 function draw(){const per=60/tf,N=1440/tf,e=D[pair].end.split('-');
-$('h1').textContent=`Chrono Heatmap ${pair} M${tf}`;$('sub').textContent=`Waktu WIB (UTC+7) | Data sampai ${+e[2]} ${MN[+e[1]-1]} ${e[0]}`;
+$('h1').textContent=`MPS Market Pulse ${pair} M${tf}`;$('sub').textContent=`Waktu WIB (UTC+7) | Data sampai ${+e[2]} ${MN[+e[1]-1]} ${e[0]}`;
 seg('sp',['EURUSD','XAUUSD'],()=>pair,v=>{pair=v});seg('st',[1,5,15],()=>tf,v=>{tf=v;if(sel!=='S')sel=Math.min(sel,23)});
 const ch=$('chips');ch.innerHTML='';['S',...Array.from({length:24},(_,i)=>i)].forEach(v=>{const b=document.createElement('button');b.textContent=v==='S'?'★ Searah':p2(v);b.className=v===sel?'on':'';b.onclick=()=>{sel=v;draw();window.scrollTo(0,0)};ch.appendChild(b)});
 let h='',cnt=0;const lo=sel==='S'?0:sel*per,hi=sel==='S'?N:(sel+1)*per;
