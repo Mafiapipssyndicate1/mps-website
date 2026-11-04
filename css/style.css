@@ -120,3 +120,53 @@
 .mps-warning li {
   margin-bottom: 6px;
 }
+
+
+/* MPS GOLD METALLIC SHINE — headings and brand titles only */
+.hero h1,
+.section-head h2,
+.page-head h1,
+.card h3,
+.content h2,
+.content h3,
+.nav-brand,
+.footer-brand {
+  color: #e8c76a;
+  background: linear-gradient(
+    110deg,
+    #8f681d 0%,
+    #d5ad4e 18%,
+    #fff2b0 34%,
+    #c99b35 48%,
+    #fff0a0 57%,
+    #a97920 72%,
+    #f4d77c 88%,
+    #9b711f 100%
+  );
+  background-size: 220% 100%;
+  background-position: 100% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: mps-gold-shine 7s ease-in-out infinite;
+  text-shadow: 0 0 18px rgba(212, 175, 55, .10);
+}
+
+@keyframes mps-gold-shine {
+  0%, 15% { background-position: 100% 50%; }
+  65%, 100% { background-position: 0% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero h1,
+  .section-head h2,
+  .page-head h1,
+  .card h3,
+  .content h2,
+  .content h3,
+  .nav-brand,
+  .footer-brand {
+    animation: none;
+    background-position: 50% 50%;
+  }
+}
