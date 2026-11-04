@@ -24,14 +24,18 @@
 
 <header class="page-head">
   <div class="eyebrow">STEP 2 — PROSES PENDAFTARAN MEMBER</div>
-  <h1>Konfirmasi Deposit &amp; MT5</h1>
-  <p>Lanjutkan proses pendaftaran dengan menyampaikan data deposit dan akun MT5 untuk diverifikasi admin MPS.</p>
+  <h1>Verifikasi Akun IB MPS</h1>
+  <p>Lanjutkan proses pendaftaran dengan menyampaikan informasi identifikasi akun dan data deposit yang diperlukan untuk verifikasi admin MPS.</p>
 </header>
 
 <section>
   <div class="container">
     <div class="notice">
-      <strong>Step 2 — Wajib untuk menyelesaikan pendaftaran:</strong> Setelah mengisi data diri pada Step 1, baca dan pahami <a href="terms.html" target="_blank" rel="noopener">Syarat &amp; Ketentuan MPS</a>. Jika kamu benar-benar setuju, lanjutkan formulir ini dengan mengisi data akun MT5, nominal deposit pertama, tanggal deposit, dan mengunggah bukti deposit. Admin akan memeriksa data pendaftaran, bukti serta nominal deposit, dan validitas akun MT5. Jika seluruhnya valid dan disetujui, kamu akan diterima sebagai member dan admin akan memberikan akses ke grup Telegram MPS. Pengiriman formulir belum berarti otomatis diterima.
+      <strong>Step 2 — Wajib untuk menyelesaikan pendaftaran:</strong> Setelah mengisi data diri pada Step 1, baca dan pahami <a href="terms.html" target="_blank" rel="noopener">Syarat &amp; Ketentuan MPS</a>. Jika setuju, isi hanya informasi yang diminta pada formulir ini: nomor login MT5, jenis akun, nominal dan tanggal deposit pertama, serta bukti deposit yang relevan. Informasi tersebut diperlukan untuk memeriksa keterkaitan akun dengan IB MPS. MPS tidak meminta akses untuk masuk atau mengendalikan akun trading. Admin akan melakukan verifikasi sebelum keanggotaan disetujui. Pengiriman formulir belum berarti otomatis diterima.
+    </div>
+    <div role="alert" style="margin:16px 0;padding:16px;border:1px solid #dc2626;border-left:5px solid #ef4444;border-radius:10px;background:#2a1010;color:#fff1f2">
+      <strong style="color:#fca5a5">🔺 PERINGATAN KEAMANAN — JANGAN BAGIKAN PASSWORD ATAU KODE OTP</strong>
+      <p style="margin:8px 0 0">Dilarang memberikan password MT5, password investor, kode OTP, PIN, atau kode verifikasi kepada siapa pun, termasuk admin maupun seluruh tim MPS. <strong>MPS tidak pernah meminta informasi tersebut.</strong> Kami hanya memerlukan nomor login MT5 dan jenis akun untuk verifikasi keterkaitan akun dengan IB MPS. Jangan pernah memberikan akses jarak jauh atau akses masuk ke akun trading Anda.</p>
     </div>
 
     <form class="form-card mt-4" id="depositForm">
@@ -46,11 +50,12 @@
         <small class="muted">Gunakan username Telegram yang bisa dihubungi admin.</small>
       </div>
 
-      <h2 class="mt-4">2. Data akun trading</h2>
+      <h2 class="mt-4">2. Informasi identifikasi akun trading</h2>
+      <p class="muted">Formulir ini tidak meminta seluruh data atau akses akun MT5. Cukup isi informasi identifikasi yang tercantum di bawah.</p>
       <div class="field">
         <label for="mt5Login">Nomor login MT5 *</label>
         <input id="mt5Login" name="mt5Login" type="text" required inputmode="numeric" pattern="[0-9]{4,20}" maxlength="20" autocomplete="off" placeholder="Contoh: 12345678">
-        <small class="muted">Masukkan nomor login akun MT5, bukan password, nomor HP, atau email.</small>
+        <small class="muted">Cukup masukkan nomor login MT5 untuk identifikasi akun. Ini bukan password dan tidak dapat digunakan untuk masuk ke akun.</small>
       </div>
       <div class="field">
         <label for="accountType">Jenis akun trading *</label>
@@ -97,7 +102,7 @@
 
       <button class="btn btn-gold mt-3" type="submit" id="submitDeposit">Kirim untuk Verifikasi Admin</button>
       <div class="form-message" id="depositMessage" role="status" aria-live="polite"></div>
-      <p class="muted" style="font-size:11px">Penting: jangan pernah mengunggah password MT5, password investor, OTP, data kartu, atau informasi login rahasia. MPS hanya memerlukan nomor login MT5 untuk keperluan pemeriksaan akun.</p>
+      <div role="alert" style="margin-top:16px;padding:14px;border:1px solid #dc2626;border-left:5px solid #ef4444;border-radius:10px;background:#2a1010;color:#fff1f2;font-size:13px"><strong style="color:#fca5a5">🔺 INGAT: PASSWORD &amp; OTP BERSIFAT RAHASIA.</strong><p style="margin:6px 0 0">Jangan tulis atau kirim password MT5, password investor, OTP, PIN, atau kode verifikasi di formulir, chat, maupun kepada siapa pun. Termasuk kepada tim MPS. MPS tidak pernah meminta dan tidak membutuhkan informasi tersebut.</p></div>
     </form>
   </div>
 </section>
