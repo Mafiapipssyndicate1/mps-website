@@ -24,65 +24,80 @@
 
 <header class="page-head">
   <div class="eyebrow">IB Account Administration</div>
-  <h1>Konfirmasi Deposit</h1>
-  <p>Formulir khusus member MPS untuk membantu admin memeriksa akun IB dan administrasi program rebate.</p>
+  <h1>Konfirmasi Deposit &amp; MT5</h1>
+  <p>Formulir khusus member MPS untuk pengajuan pemeriksaan akun IB dan administrasi program rebate.</p>
 </header>
 
 <section>
   <div class="container">
     <div class="notice">
-      <strong>Perlu diketahui:</strong> Formulir ini bukan syarat untuk bergabung dengan komunitas MPS. Isi hanya jika kamu ingin mengajukan verifikasi akun untuk program IB/rebate MPS. Status pengajuan awal adalah menunggu pemeriksaan admin.
+      <strong>Khusus member MPS:</strong> Formulir ini bukan syarat untuk bergabung dengan komunitas. Isi jika kamu ingin mengajukan pemeriksaan akun untuk program IB/rebate MPS. Pengajuan akan berstatus menunggu verifikasi admin sampai diperiksa.
     </div>
+
     <form class="form-card mt-4" id="depositForm">
+      <h2>1. Data member</h2>
       <div class="field">
         <label for="memberName">Nama member *</label>
-        <input id="memberName" name="memberName" required maxlength="80" autocomplete="name" placeholder="Nama sesuai data member MPS">
+        <input id="memberName" name="memberName" required maxlength="80" autocomplete="name" placeholder="Nama sesuai data pendaftaran MPS">
       </div>
       <div class="field">
         <label for="telegram">Username Telegram *</label>
-        <input id="telegram" name="telegram" required maxlength="40" placeholder="@username">
+        <input id="telegram" name="telegram" required maxlength="40" autocomplete="off" placeholder="Contoh: @username">
+        <small class="muted">Gunakan username Telegram yang bisa dihubungi admin.</small>
       </div>
+
+      <h2 class="mt-4">2. Data akun trading</h2>
       <div class="field">
         <label for="mt5Login">Nomor login MT5 *</label>
-        <input id="mt5Login" name="mt5Login" required inputmode="numeric" pattern="[0-9]{4,20}" maxlength="20" placeholder="Contoh: 12345678">
+        <input id="mt5Login" name="mt5Login" type="text" required inputmode="numeric" pattern="[0-9]{4,20}" maxlength="20" autocomplete="off" placeholder="Contoh: 12345678">
+        <small class="muted">Masukkan nomor login akun MT5, bukan password, nomor HP, atau email.</small>
       </div>
       <div class="field">
         <label for="accountType">Jenis akun trading *</label>
         <select id="accountType" name="accountType" required>
           <option value="">Pilih jenis akun</option>
-          <option>Standard</option>
-          <option>Standard Cent</option>
-          <option>Pro</option>
-          <option>Raw Spread</option>
-          <option>Zero</option>
-          <option>Lainnya</option>
+          <option value="Standard">Standard</option>
+          <option value="Standard Cent">Standard Cent</option>
+          <option value="Pro">Pro</option>
+          <option value="Raw Spread">Raw Spread</option>
+          <option value="Zero">Zero</option>
+          <option value="Lainnya">Lainnya</option>
         </select>
       </div>
+      <div class="field" id="otherAccountField" hidden>
+        <label for="otherAccountType">Sebutkan jenis akun *</label>
+        <input id="otherAccountType" name="otherAccountType" type="text" maxlength="40" autocomplete="off" placeholder="Tulis jenis akun">
+      </div>
+
+      <h2 class="mt-4">3. Data deposit pertama</h2>
       <div class="field">
         <label for="depositAmount">Nominal deposit pertama (IDR) *</label>
-        <input id="depositAmount" name="depositAmount" type="text" required inputmode="numeric" autocomplete="off" maxlength="19" placeholder="Contoh: 500.000" oninput="this.value = this.value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')">
-        <small class="muted">Nominal akan otomatis menggunakan titik pemisah ribuan. Contoh: 1.000.000.</small>
+        <input id="depositAmount" name="depositAmount" type="text" required inputmode="numeric" autocomplete="off" maxlength="19" placeholder="Contoh: 500.000" aria-describedby="depositAmountHelp">
+        <small class="muted" id="depositAmountHelp">Ketik angka saja. Titik pemisah ribuan akan muncul otomatis, misalnya 500.000 atau 1.000.000.</small>
       </div>
       <div class="field">
         <label for="depositDate">Tanggal deposit pertama *</label>
         <input id="depositDate" name="depositDate" type="date" required>
       </div>
       <div class="field">
-        <label for="proof">Bukti deposit (JPG, PNG, atau WEBP; maks. 5 MB) *</label>
-        <input id="proof" name="proof" type="file" accept="image/jpeg,image/png,image/webp" required>
-        <small class="muted">Pastikan bukti menunjukkan transaksi deposit yang relevan. Tutupi informasi pribadi yang tidak diperlukan sebelum mengunggah.</small>
+        <label for="proof">Bukti deposit (JPG, PNG, atau WEBP; maksimal 5 MB) *</label>
+        <input id="proof" name="proof" type="file" accept="image/jpeg,image/png,image/webp" required aria-describedby="proofHelp">
+        <small class="muted" id="proofHelp">Unggah gambar bukti transaksi deposit yang relevan. Tutupi informasi pribadi yang tidak diperlukan sebelum mengunggah.</small>
       </div>
+
       <div class="field" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden">
         <label for="website">Jangan isi kolom ini</label>
         <input id="website" name="website" tabindex="-1" autocomplete="off">
       </div>
+
       <label class="checkline">
         <input type="checkbox" id="consent" required>
         <span>Saya menyatakan data yang dikirim benar dan mengizinkan MPS menggunakannya untuk verifikasi akun IB serta administrasi program rebate. Saya memahami bahwa MPS tidak meminta password, OTP, atau akses ke akun trading saya. Saya telah membaca <a href="privacy.html" target="_blank" rel="noopener">Kebijakan Privasi</a>.</span>
       </label>
+
       <button class="btn btn-gold mt-3" type="submit" id="submitDeposit">Kirim Konfirmasi</button>
       <div class="form-message" id="depositMessage" role="status" aria-live="polite"></div>
-      <p class="muted" style="font-size:11px">Jangan pernah mengunggah password MT5, password investor, OTP, data kartu, atau informasi login rahasia. Pengiriman hanya akan aktif setelah koneksi penyimpanan resmi dipasang.</p>
+      <p class="muted" style="font-size:11px">Penting: jangan pernah mengunggah password MT5, password investor, OTP, data kartu, atau informasi login rahasia. MPS hanya memerlukan nomor login MT5 untuk keperluan pemeriksaan akun.</p>
     </form>
   </div>
 </section>
@@ -101,6 +116,6 @@
 </footer>
 <script src="config.js"></script>
 <script src="js/main.js"></script>
-<script src="js/deposit.js?v=3"></script>
+<script src="js/deposit.js?v=4"></script>
 </body>
 </html>
