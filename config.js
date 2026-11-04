@@ -14,7 +14,7 @@ joinTelegram: "https://t.me/Ndhisolasi",
     email: "mailto:ndhisolasi.music@gmail.com"
   },
   form: {
-    endpoint: "",
+    endpoint: "https://script.google.com/macros/s/AKfycbzJcnXkf_jRWEU13SaaGGXmFWHnpPRkIy81fmvrQBTzJmaDEJgFpeEH4GSOqAn4-_TN/exec",
     fallbackNote: "Pendaftaran online belum terhubung. Silakan salin ringkasan pendaftaran dan hubungi admin melalui Telegram."
   },
   depositForm: {
