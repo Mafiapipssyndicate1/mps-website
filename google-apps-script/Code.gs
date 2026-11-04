@@ -48,6 +48,8 @@ function setupMPSStorage() {
     sheet.getRange(1, 1, 1, 10).setFontWeight("bold");
   }
 
+  formatMpsWorkbook_(spreadsheet);
+
   Logger.log("Spreadsheet: " + spreadsheet.getUrl());
   Logger.log("Folder bukti (akses privat): " + folder.getUrl());
   return {
@@ -117,6 +119,7 @@ function doPost(e) {
       new Date(), name, telegram, login, accountType, amount, date,
       proofFile.getUrl(), "Menunggu verifikasi", ""
     ]);
+    formatMpsSheet_(sheet, "ib");
     return json_({ ok: true, status: "Menunggu verifikasi" });
   } catch (err) {
     if (proofFile) {
@@ -151,6 +154,7 @@ function registerMember_(data, lock) {
       sheet.getRange(1, 1, 1, 7).setFontWeight("bold");
     }
     sheet.appendRow([new Date(), nickname, telegram, country, goal, note, "Menunggu verifikasi"]);
+    formatMpsSheet_(sheet, "pendaftar");
     return json_({ ok: true, status: "Tersimpan" });
   } finally { lock.releaseLock(); }
 }
@@ -166,4 +170,100 @@ function safeFileName_(value) {
 function json_(value) {
   return ContentService.createTextOutput(JSON.stringify(value))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * Professional MPS spreadsheet styling.
+ * Safe to run repeatedly: formats existing rows without deleting data.
+ */
+function formatMpsWorkbook_(spreadsheet) {
+  var registration = spreadsheet.getSheetByName("Pendaftar");
+  var ib = spreadsheet.getSheetByName("Data IB MPS");
+  if (registration) formatMpsSheet_(registration, "pendaftar");
+  if (ib) formatMpsSheet_(ib, "ib");
+
+  var dashboard = spreadsheet.getSheetByName("Ringkasan");
+  if (!dashboard) dashboard = spreadsheet.insertSheet("Ringkasan", 0);
+  dashboard.clear();
+  dashboard.setHiddenGridlines(true);
+  dashboard.getRange("A1:D1").merge();
+  dashboard.getRange("A1").setValue("MARKET PSYCHOLOGY SOCIETY");
+  dashboard.getRange("A1:D1").setBackground("#111111").setFontColor("#D4AF37")
+    .setFontSize(16).setFontWeight("bold").setHorizontalAlignment("center").setVerticalAlignment("middle");
+  dashboard.setRowHeight(1, 42);
+  dashboard.getRange("A2:D2").merge();
+  dashboard.getRange("A2").setValue("DASHBOARD ADMINISTRASI MEMBER");
+  dashboard.getRange("A2:D2").setBackground("#222222").setFontColor("#FFFFFF")
+    .setFontSize(10).setHorizontalAlignment("center");
+  dashboard.getRange("A4:B4").setValues([["INDIKATOR", "JUMLAH"]]);
+  dashboard.getRange("A4:B4").setBackground("#D4AF37").setFontColor("#111111").setFontWeight("bold");
+  dashboard.getRange("A5:B7").setValues([
+    ["Total Pendaftar", ""],
+    ["Menunggu Verifikasi Pendaftaran", ""],
+    ["Total Konfirmasi Deposit", ""]
+  ]);
+  dashboard.getRange("B5").setFormula("=COUNTA('Pendaftar'!B2:B)");
+  dashboard.getRange("B6").setFormula("=COUNTIF('Pendaftar'!G2:G,\"Menunggu verifikasi\")");
+  dashboard.getRange("B7").setFormula("=COUNTA('Data IB MPS'!B2:B)");
+  dashboard.getRange("A5:B7").setBackground("#F7F3E8");
+  dashboard.getRange("A5:A7").setFontWeight("bold");
+  dashboard.getRange("B5:B7").setHorizontalAlignment("center").setFontWeight("bold").setFontSize(14);
+  dashboard.getRange("A9:D9").merge();
+  dashboard.getRange("A9").setValue("Catatan: Dashboard ini menghitung data pada tab Pendaftar dan Data IB MPS. Periksa status secara berkala.");
+  dashboard.getRange("A9:D9").setWrap(true).setFontColor("#666666").setFontSize(9);
+  dashboard.setColumnWidth(1, 280);
+  dashboard.setColumnWidth(2, 150);
+  dashboard.setColumnWidths(3, 2, 120);
+  dashboard.setFrozenRows(2);
+}
+
+function formatMpsSheet_(sheet, type) {
+  var isRegistration = type === "pendaftar";
+  var lastColumn = isRegistration ? 7 : 10;
+  var lastRow = Math.max(sheet.getLastRow(), 1);
+  sheet.setHiddenGridlines(true);
+  sheet.setFrozenRows(1);
+  sheet.getRange(1, 1, 1, lastColumn)
+    .setBackground("#111111")
+    .setFontColor("#D4AF37")
+    .setFontWeight("bold")
+    .setFontSize(10)
+    .setHorizontalAlignment("center")
+    .setVerticalAlignment("middle")
+    .setWrap(true);
+  sheet.setRowHeight(1, 38);
+  if (lastRow > 1) {
+    sheet.getRange(2, 1, lastRow - 1, lastColumn)
+      .setFontFamily("Arial")
+      .setFontSize(10)
+      .setVerticalAlignment("middle");
+    sheet.getRange(2, 1, lastRow - 1, lastColumn)
+      .applyRowBanding(SpreadsheetApp.BandingTheme.LIGHT_GREY);
+    sheet.getRange(2, 1, lastRow - 1, 1).setNumberFormat("dd mmm yyyy hh:mm");
+    if (isRegistration) {
+      sheet.getRange(2, 7, lastRow - 1, 1).setHorizontalAlignment("center");
+    } else {
+      sheet.getRange(2, 6, lastRow - 1, 1).setNumberFormat('"Rp" #,##0');
+      sheet.getRange(2, 7, lastRow - 1, 1).setNumberFormat("dd mmm yyyy");
+      sheet.getRange(2, 9, lastRow - 1, 1).setHorizontalAlignment("center");
+    }
+  }
+  var widths = isRegistration
+    ? [155, 170, 170, 120, 230, 260, 165]
+    : [155, 170, 170, 110, 130, 165, 135, 250, 165, 240];
+  for (var i = 0; i < widths.length; i++) sheet.setColumnWidth(i + 1, widths[i]);
+  sheet.getRange(1, 1, Math.max(lastRow, 2), lastColumn).setWrap(true);
+  if (sheet.getFilter()) sheet.getFilter().remove();
+  sheet.getRange(1, 1, Math.max(lastRow, 2), lastColumn).createFilter();
+  var statusColumn = isRegistration ? 7 : 9;
+  var statusRange = sheet.getRange(2, statusColumn, Math.max(lastRow - 1, 1), 1);
+  var rules = [
+    SpreadsheetApp.newConditionalFormatRule().whenTextContains("Menunggu")
+      .setBackground("#FFF2CC").setFontColor("#7F6000").setRanges([statusRange]).build(),
+    SpreadsheetApp.newConditionalFormatRule().whenTextContains("Disetujui")
+      .setBackground("#D9EAD3").setFontColor("#274E13").setRanges([statusRange]).build(),
+    SpreadsheetApp.newConditionalFormatRule().whenTextContains("Ditolak")
+      .setBackground("#F4CCCC").setFontColor("#990000").setRanges([statusRange]).build()
+  ];
+  sheet.setConditionalFormatRules(rules);
 }
