@@ -28,6 +28,14 @@ function setupMPSStorage() {
     props.setProperty("MPS_PROOF_FOLDER_ID", folder.getId());
   }
 
+  var registrationSheet = spreadsheet.getSheetByName("Pendaftar");
+  if (!registrationSheet) registrationSheet = spreadsheet.insertSheet("Pendaftar");
+  if (registrationSheet.getLastRow() === 0) {
+    registrationSheet.appendRow(["Waktu Masuk", "Nama Panggilan", "Username Telegram", "Negara", "Tujuan Bergabung", "Catatan", "Status"]);
+    registrationSheet.setFrozenRows(1);
+    registrationSheet.getRange(1, 1, 1, 7).setFontWeight("bold");
+  }
+
   var sheet = spreadsheet.getSheetByName("Data IB MPS");
   if (!sheet) sheet = spreadsheet.insertSheet("Data IB MPS");
   if (sheet.getLastRow() === 0) {
@@ -61,6 +69,9 @@ function doPost(e) {
     var raw = e && e.postData && e.postData.contents;
     if (!raw || raw.length > 8000000) throw new Error("Payload kosong atau terlalu besar.");
     var data = JSON.parse(raw);
+
+    // Step 1 member registration uses its own sheet, separate from Step 2.
+    if (data.action === "register") return registerMember_(data, lock);
 
     // Honeypot field: silently ignore automated spam.
     if (data.website) return json_({ ok: true });
@@ -116,6 +127,32 @@ function doPost(e) {
   } finally {
     try { lock.releaseLock(); } catch (ignored) {}
   }
+}
+
+function registerMember_(data, lock) {
+  var nickname = clean_(data.nickname, 60);
+  var telegram = clean_(data.telegram, 40);
+  var country = clean_(data.country, 60);
+  var goal = clean_(data.goal, 100);
+  var note = clean_(data.note, 500);
+  if (!nickname || !telegram || !country || !goal) return json_({ ok: false, error: "Kolom wajib pendaftaran belum lengkap." });
+  if (!/^@?[a-zA-Z0-9_]{5,32}$/.test(telegram)) return json_({ ok: false, error: "Username Telegram tidak valid." });
+
+  lock.waitLock(20000);
+  try {
+    var spreadsheetId = PropertiesService.getScriptProperties().getProperty("MPS_SPREADSHEET_ID");
+    if (!spreadsheetId) throw new Error("Penyimpanan belum disiapkan. Jalankan setupMPSStorage() terlebih dahulu.");
+    var spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+    var sheet = spreadsheet.getSheetByName("Pendaftar");
+    if (!sheet) {
+      sheet = spreadsheet.insertSheet("Pendaftar");
+      sheet.appendRow(["Waktu Masuk", "Nama Panggilan", "Username Telegram", "Negara", "Tujuan Bergabung", "Catatan", "Status"]);
+      sheet.setFrozenRows(1);
+      sheet.getRange(1, 1, 1, 7).setFontWeight("bold");
+    }
+    sheet.appendRow([new Date(), nickname, telegram, country, goal, note, "Menunggu verifikasi"]);
+    return json_({ ok: true, status: "Tersimpan" });
+  } finally { lock.releaseLock(); }
 }
 
 function clean_(value, maxLength) {
