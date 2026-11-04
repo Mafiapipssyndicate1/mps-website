@@ -11,7 +11,7 @@
   function $(id) { return document.getElementById(id); }
   var form = $("joinForm");
   if (!form) return;
-  var msg = $("formMessage"), box = $("registrationSummary"), copyBtn = $("copySummary"), tgBtn = $("openTelegram");
+  var msg = $("formMessage"), box = $("registrationSummary"), copyBtn = $("copySummary"), tgBtn = $("openTelegram"), step2 = $("step2Next");
   var sendBtn = form.querySelector('button[type="submit"]');
   var summary = "", tgLink = "";
   function show(t, x) { msg.className = "form-message show " + t; msg.textContent = x; }
@@ -40,7 +40,7 @@
         if (sendBtn) sendBtn.disabled = false;
         box.textContent = summary; box.hidden = false; copyBtn.hidden = false;
         if (tgLink) tgBtn.hidden = false;
-        if (ok) show("success", "Pendaftaran terkirim dan ringkasan sudah disalin.");
+        if (ok) { show("success", "Step 1 berhasil dikirim. Silakan lanjutkan ke Step 2 untuk menyelesaikan proses pendaftaran MPS."); if (step2) step2.hidden = false; }
         else show("error", "Pengiriman gagal. Periksa koneksi lalu coba lagi.");
         if (tab && tgLink) tab.location.href = tgLink;
       });
