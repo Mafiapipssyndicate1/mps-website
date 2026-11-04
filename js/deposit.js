@@ -83,8 +83,8 @@
     }
 
     var amountDigits = amountInput.value.replace(/\D/g, "");
-    if (!amountDigits || Number(amountDigits) <= 0) {
-      show("error", "Masukkan nominal deposit yang valid.");
+    if (!amountDigits || Number(amountDigits) < 1500000) {
+      show("error", "Nominal deposit wajib minimal Rp1.500.000 setelah akun terhubung di bawah IB MPS.");
       amountInput.focus();
       return;
     }
