@@ -86,6 +86,9 @@ function doPost(e) {
       sheet.appendRow([id, new Date(), nickname, telegram, country, goal, note,
         "Menunggu verifikasi", "", "", "", "", "", "", "Belum ada konfirmasi", "", "", new Date()]);
       formatMemberSheet_(sheet);
+      sendTelegram_("🆕 PENDAFTARAN MEMBER MPS\\nNama: " + nickname +
+        "\\nTelegram: " + telegram + "\\nNegara: " + country +
+        "\\nTujuan: " + goal + "\\nID: " + id);
       return json_({ ok: true, status: "Pendaftaran tersimpan", memberId: id });
     }
 
@@ -123,6 +126,10 @@ function doPost(e) {
     ]]);
     sheet.getRange(row, 17, 1, 2).setValues([[new Date(), new Date()]]);
     formatMemberSheet_(sheet);
+    sendTelegram_("💳 KONFIRMASI DEPOSIT MPS\\nNama: " + name +
+      "\\nTelegram: " + telegram + "\\nLogin MT5: " + login +
+      "\\nDeposit: Rp" + amount.toLocaleString("id-ID") +
+      "\\nStatus: Menunggu verifikasi");
     return json_({ ok: true, status: "Konfirmasi tersimpan dan menunggu verifikasi" });
   } catch (err) {
     if (uploadedFile) { try { uploadedFile.setTrashed(true); } catch (ignored) {} }
@@ -227,4 +234,54 @@ function createDashboard_(ss) {
   sh.getRange("B5:B7").setFontSize(14).setFontWeight("bold").setHorizontalAlignment("center");
   sh.setColumnWidth(1, 290);
   sh.setColumnWidth(2, 150);
+}
+
+
+/**
+ * Jalankan sekali untuk menghubungkan bot Telegram ke chat pribadi.
+ * Sebelumnya pengguna harus menekan /start pada bot.
+ */
+function setupTelegram() {
+  const ui = SpreadsheetApp.getUi();
+  const response = ui.prompt("Hubungkan Telegram MPS",
+    "Tempel token bot dari BotFather di sini. Token disimpan di Script Properties, bukan di sheet.",
+    ui.ButtonSet.OK_CANCEL);
+  if (response.getSelectedButton() !== ui.Button.OK) return;
+  const token = response.getResponseText().trim();
+  if (!token || token.indexOf(":") < 1) throw new Error("Token bot tidak valid.");
+
+  const url = "https://api.telegram.org/bot" + token + "/getUpdates";
+  const result = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+  const payload = JSON.parse(result.getContentText());
+  if (!payload.ok) throw new Error("Telegram menolak token. Periksa token BotFather.");
+  const updates = payload.result || [];
+  let chatId = "";
+  for (let i = updates.length - 1; i >= 0; i--) {
+    const msg = updates[i].message || updates[i].edited_message;
+    if (msg && msg.chat && msg.chat.type === "private") {
+      chatId = String(msg.chat.id);
+      break;
+    }
+  }
+  if (!chatId) throw new Error("Chat belum ditemukan. Buka bot Telegram, tekan /start, kirim satu pesan, lalu jalankan setupTelegram lagi.");
+  const props = PropertiesService.getScriptProperties();
+  props.setProperty("MPS_TELEGRAM_BOT_TOKEN", token);
+  props.setProperty("MPS_TELEGRAM_CHAT_ID", chatId);
+  ui.alert("Telegram MPS berhasil terhubung. Notifikasi akan dikirim ke chat pribadi kamu.");
+}
+
+function sendTelegram_(message) {
+  try {
+    const props = PropertiesService.getScriptProperties();
+    const token = props.getProperty("MPS_TELEGRAM_BOT_TOKEN");
+    const chatId = props.getProperty("MPS_TELEGRAM_CHAT_ID");
+    if (!token || !chatId) return;
+    UrlFetchApp.fetch("https://api.telegram.org/bot" + token + "/sendMessage", {
+      method: "post",
+      payload: { chat_id: chatId, text: message },
+      muteHttpExceptions: true
+    });
+  } catch (err) {
+    console.error("Notifikasi Telegram gagal: " + err);
+  }
 }
