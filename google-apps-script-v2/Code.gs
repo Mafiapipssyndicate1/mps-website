@@ -101,10 +101,10 @@ function doPost(e) {
     const base64 = String(data.proofBase64 || "");
 
     if (!name || !telegram || !/^[0-9]{4,20}$/.test(login) || !accountType ||
-        !Number.isInteger(amount) || amount < 1500000 || !/^\\d{4}-\\d{2}-\\d{2}$/.test(date)) {
+        !Number.isInteger(amount) || amount < 1500000 || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
       throw new Error("Data konfirmasi tidak valid. Periksa login MT5, tanggal, dan deposit minimum Rp1.500.000.");
     }
-    if (!/^image\\/(jpeg|png|webp)$/.test(mime) || !base64 || base64.length > 7000000) {
+    if (!/^image\/(jpeg|png|webp)$/.test(mime) || !base64 || base64.length > 7000000) {
       throw new Error("Bukti harus JPG, PNG, atau WEBP maksimal 5 MB.");
     }
     const row = findMemberRow_(sheet, telegram);
