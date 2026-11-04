@@ -75,9 +75,12 @@ function doPost(e) {
     var proofName = clean_(data.proofName, 100);
     var base64 = String(data.proofBase64 || "");
 
+    // Server-side eligibility rule: minimum deposit is Rp1,500,000.
+    // Never rely only on browser-side validation.
     if (!name || !telegram || !/^[0-9]{4,20}$/.test(login) || !accountType ||
-        !isFinite(amount) || amount <= 0 || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-      throw new Error("Data wajib tidak valid.");
+        !isFinite(amount) || Math.floor(amount) !== amount || amount < 1500000 ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      throw new Error("Data wajib tidak valid. Deposit minimum setelah akun terhubung di bawah IB MPS adalah Rp1.500.000.");
     }
     if (!/^image\/(jpeg|png|webp)$/.test(mime) || !base64 || base64.length > 7000000) {
       throw new Error("Bukti harus berupa JPG, PNG, atau WEBP dengan ukuran maksimal 5 MB.");
