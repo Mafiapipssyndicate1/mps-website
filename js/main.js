@@ -30,7 +30,14 @@
   document.querySelectorAll("[data-link]").forEach(link => {
     const key = link.dataset.link;
     const url = cfg.links && cfg.links[key];
-    if (url) link.href = url;
+    if (url) {
+      link.href = url;
+    } else if (key === "whatsapp" && cfg.links && cfg.links.telegram) {
+      // Avoid a dead "#" contact button when WhatsApp has not been configured.
+      link.href = cfg.links.telegram;
+      link.setAttribute("aria-label", "Hubungi MPS melalui Telegram");
+      link.title = "Hubungi MPS melalui Telegram";
+    }
   });
   document.querySelectorAll("[data-rebate='max']").forEach(el => {
     el.textContent = String((cfg.rebate && cfg.rebate.maxPercent) ?? 70);
