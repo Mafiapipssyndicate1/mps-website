@@ -104,6 +104,7 @@
 
     try {
       var payload = {
+        action: "deposit",
         memberName: document.getElementById("memberName").value.trim(),
         telegram: document.getElementById("telegram").value.trim(),
         mt5Login: document.getElementById("mt5Login").value.trim(),
