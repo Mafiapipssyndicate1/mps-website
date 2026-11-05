@@ -208,3 +208,62 @@
 @keyframes join-drift{from{transform:translate3d(0,0,0) rotate(0)}to{transform:translate3d(18px,14px,0) rotate(12deg)}}
 @media(max-width:620px){.join-spotlight{padding:43px 18px}.join-cta{width:100%;max-width:330px}.join-perks{gap:8px 13px;font-size:10px}}
 @media(prefers-reduced-motion:reduce){.join-live span,.join-cta,.join-orbit-one,.join-orbit-two{animation:none!important}}
+
+
+/* MPS RED LIVE CTA — visual effect only; preserve existing dimensions and behavior */
+.btn-gold[href="join.html"],
+.join-cta,
+#joinForm button[type="submit"],
+#step2Next a.btn-gold {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #fff;
+  border-color: #ff4545;
+  background: linear-gradient(135deg, #ff5555 0%, #d90018 48%, #8f0012 100%);
+  box-shadow: 0 0 0 0 rgba(255, 35, 55, .42), 0 0 14px rgba(220, 0, 25, .24);
+  animation: mps-red-pulse 2.2s ease-in-out infinite;
+}
+.btn-gold[href="join.html"]::after,
+.join-cta::after,
+#joinForm button[type="submit"]::after,
+#step2Next a.btn-gold::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -60%;
+  left: -75%;
+  width: 48%;
+  height: 220%;
+  transform: rotate(22deg);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.42), transparent);
+  animation: mps-red-shine 3.4s ease-in-out infinite;
+  pointer-events: none;
+}
+.btn-gold[href="join.html"]:hover,
+.join-cta:hover,
+#joinForm button[type="submit"]:hover,
+#step2Next a.btn-gold:hover {
+  color: #fff;
+  border-color: #ff7777;
+  background: linear-gradient(135deg, #ff7777 0%, #ed102c 50%, #a90018 100%);
+  box-shadow: 0 0 24px rgba(255, 25, 50, .42);
+}
+@keyframes mps-red-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 35, 55, .12), 0 0 12px rgba(220, 0, 25, .20); }
+  50% { box-shadow: 0 0 0 7px rgba(255, 35, 55, 0), 0 0 23px rgba(255, 0, 35, .42); }
+}
+@keyframes mps-red-shine {
+  0%, 28% { left: -75%; }
+  65%, 100% { left: 140%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-gold[href="join.html"],
+  .join-cta,
+  #joinForm button[type="submit"],
+  #step2Next a.btn-gold,
+  .btn-gold[href="join.html"]::after,
+  .join-cta::after,
+  #joinForm button[type="submit"]::after,
+  #step2Next a.btn-gold::after { animation: none !important; }
+}
