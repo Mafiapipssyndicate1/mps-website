@@ -373,3 +373,35 @@ a.btn[href="deposit-confirmation.html"]:hover,
     animation: none !important;
   }
 }
+
+
+/* FINAL MPS CTA POINTER — gold mouse cursor, no hand emoji */
+a.btn[href="join.html"]::before,
+a.btn[href="#joinForm"]::before,
+a.btn[href="deposit-confirmation.html"]::before,
+#joinForm button.btn[type="submit"]::before,
+.join-cta::before,
+#step2Next a.btn-gold::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 5;
+  top: -7px;
+  right: 14px;
+  width: 18px;
+  height: 24px;
+  background: linear-gradient(135deg, #fff3bd 0%, #e5bd55 48%, #9c701c 100%);
+  clip-path: polygon(0 0, 0 100%, 29% 73%, 48% 100%, 61% 94%, 43% 67%, 80% 67%);
+  filter: drop-shadow(1px 2px 2px rgba(0,0,0,.85));
+  pointer-events: none;
+  animation: mps-gold-cursor-tap 1.55s ease-in-out infinite;
+}
+@keyframes mps-gold-cursor-tap {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  42%, 58% { transform: translate(-1px,6px) scale(.88); }
+}
+@media (prefers-reduced-motion: reduce) {
+  a.btn[href="join.html"]::before, a.btn[href="#joinForm"]::before,
+  a.btn[href="deposit-confirmation.html"]::before, #joinForm button.btn[type="submit"]::before,
+  .join-cta::before, #step2Next a.btn-gold::before { animation: none !important; }
+}
