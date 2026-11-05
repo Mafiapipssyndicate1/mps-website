@@ -326,7 +326,7 @@
 a.btn[href="join.html"],
 a.btn[href="#joinForm"],
 a.btn[href="deposit-confirmation.html"],
-button.btn[type="submit"],
+#joinForm button.btn[type="submit"],
 .join-cta {
   position: relative;
   isolation: isolate;
@@ -342,7 +342,7 @@ button.btn[type="submit"],
 a.btn[href="join.html"]::before,
 a.btn[href="#joinForm"]::before,
 a.btn[href="deposit-confirmation.html"]::before,
-button.btn[type="submit"]::before,
+#joinForm button.btn[type="submit"]::before,
 .join-cta::before {
   content: "👆";
   position: absolute;
@@ -358,7 +358,7 @@ button.btn[type="submit"]::before,
 a.btn[href="join.html"]:hover,
 a.btn[href="#joinForm"]:hover,
 a.btn[href="deposit-confirmation.html"]:hover,
-button.btn[type="submit"]:hover,
+#joinForm button.btn[type="submit"]:hover,
 .join-cta:hover {
   color: #fff;
   border-color: #ffe7a0;
@@ -367,9 +367,9 @@ button.btn[type="submit"]:hover,
 }
 @media (prefers-reduced-motion: reduce) {
   a.btn[href="join.html"], a.btn[href="#joinForm"], a.btn[href="deposit-confirmation.html"],
-  button.btn[type="submit"], .join-cta,
+  #joinForm button.btn[type="submit"], .join-cta,
   a.btn[href="join.html"]::before, a.btn[href="#joinForm"]::before,
-  a.btn[href="deposit-confirmation.html"]::before, button.btn[type="submit"]::before, .join-cta::before {
+  a.btn[href="deposit-confirmation.html"]::before, #joinForm button.btn[type="submit"]::before, .join-cta::before {
     animation: none !important;
   }
 }
