@@ -92,6 +92,9 @@ function doPost(e) {
       return json_({ ok: true, status: "Pendaftaran tersimpan", memberId: id });
     }
 
+    // Hanya action deposit yang boleh masuk ke jalur konfirmasi deposit.
+    if (data.action !== "deposit") throw new Error("Action tidak dikenal. Gunakan register atau deposit.");
+
     // Konfirmasi deposit melengkapi baris member yang sama, bukan membuat tab/baris baru.
     const name = clean_(data.memberName, 80);
     const telegram = normalizeTelegram_(data.telegram);
@@ -275,13 +278,24 @@ function sendTelegram_(message) {
     const props = PropertiesService.getScriptProperties();
     const token = props.getProperty("MPS_TELEGRAM_BOT_TOKEN");
     const chatId = props.getProperty("MPS_TELEGRAM_CHAT_ID");
-    if (!token || !chatId) return;
-    UrlFetchApp.fetch("https://api.telegram.org/bot" + token + "/sendMessage", {
+    if (!token || !chatId) {
+      console.error("Notifikasi Telegram dilewati: token atau chat ID belum disiapkan.");
+      return false;
+    }
+    const response = UrlFetchApp.fetch("https://api.telegram.org/bot" + token + "/sendMessage", {
       method: "post",
-      payload: { chat_id: chatId, text: message },
+      contentType: "application/json",
+      payload: JSON.stringify({ chat_id: chatId, text: message }),
       muteHttpExceptions: true
     });
+    const result = JSON.parse(response.getContentText());
+    if (response.getResponseCode() < 200 || response.getResponseCode() >= 300 || !result.ok) {
+      console.error("Telegram menolak notifikasi: " + (result.description || ("HTTP " + response.getResponseCode())));
+      return false;
+    }
+    return true;
   } catch (err) {
-    console.error("Notifikasi Telegram gagal: " + err);
+    console.error("Notifikasi Telegram gagal: " + String(err && err.message || err));
+    return false;
   }
 }
