@@ -320,3 +320,56 @@
     animation: none !important;
   }
 }
+
+
+/* SITE-WIDE MEMBERSHIP CTA — all join/register buttons share one red-gold press style */
+a.btn[href="join.html"],
+a.btn[href="#joinForm"],
+a.btn[href="deposit-confirmation.html"],
+button.btn[type="submit"],
+.join-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  border-radius: 999px;
+  border: 1px solid #f0c96a;
+  color: #fff8e8;
+  background: linear-gradient(115deg, #8e1019 0%, #d7192d 38%, #b98224 72%, #f3d47b 100%);
+  background-size: 180% 180%;
+  box-shadow: 0 0 0 1px rgba(239,195,87,.25), 0 0 13px rgba(220,25,43,.32), 0 0 20px rgba(212,175,55,.16);
+  animation: mps-gold-red-beat 2s ease-in-out infinite;
+}
+a.btn[href="join.html"]::before,
+a.btn[href="#joinForm"]::before,
+a.btn[href="deposit-confirmation.html"]::before,
+button.btn[type="submit"]::before,
+.join-cta::before {
+  content: "👆";
+  position: absolute;
+  z-index: 4;
+  top: -21px;
+  right: 13px;
+  font-size: 18px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.75));
+  pointer-events: none;
+  animation: mps-finger-press 1.5s ease-in-out infinite;
+}
+a.btn[href="join.html"]:hover,
+a.btn[href="#joinForm"]:hover,
+a.btn[href="deposit-confirmation.html"]:hover,
+button.btn[type="submit"]:hover,
+.join-cta:hover {
+  color: #fff;
+  border-color: #ffe7a0;
+  background: linear-gradient(115deg, #a91220 0%, #f0273b 38%, #d49a32 72%, #ffe39a 100%);
+  box-shadow: 0 0 18px rgba(230,35,50,.4), 0 0 25px rgba(212,175,55,.28);
+}
+@media (prefers-reduced-motion: reduce) {
+  a.btn[href="join.html"], a.btn[href="#joinForm"], a.btn[href="deposit-confirmation.html"],
+  button.btn[type="submit"], .join-cta,
+  a.btn[href="join.html"]::before, a.btn[href="#joinForm"]::before,
+  a.btn[href="deposit-confirmation.html"]::before, button.btn[type="submit"]::before, .join-cta::before {
+    animation: none !important;
+  }
+}
