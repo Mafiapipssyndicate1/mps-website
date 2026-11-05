@@ -267,3 +267,56 @@
   #joinForm button[type="submit"]::after,
   #step2Next a.btn-gold::after { animation: none !important; }
 }
+
+
+/* MPS RED + GOLD PRESSING CTA — preserve layout dimensions */
+.btn-gold[href="join.html"],
+.join-cta,
+#joinForm button[type="submit"],
+#step2Next a.btn-gold {
+  border-radius: 999px;
+  border: 1px solid #f0c96a;
+  color: #fff8e8;
+  background: linear-gradient(115deg, #8e1019 0%, #d7192d 38%, #b98224 72%, #f3d47b 100%);
+  background-size: 180% 180%;
+  box-shadow: 0 0 0 1px rgba(239,195,87,.25), 0 0 13px rgba(220,25,43,.32), 0 0 20px rgba(212,175,55,.16);
+  animation: mps-gold-red-beat 2s ease-in-out infinite;
+}
+.btn-gold[href="join.html"]::before,
+.join-cta::before,
+#joinForm button[type="submit"]::before,
+#step2Next a.btn-gold::before {
+  content: "👆";
+  position: absolute;
+  z-index: 3;
+  top: -23px;
+  right: 15px;
+  font-size: 19px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.7));
+  pointer-events: none;
+  animation: mps-finger-press 1.5s ease-in-out infinite;
+}
+.btn-gold[href="join.html"]:hover,
+.join-cta:hover,
+#joinForm button[type="submit"]:hover,
+#step2Next a.btn-gold:hover {
+  color: #fff;
+  border-color: #ffe7a0;
+  background: linear-gradient(115deg, #a91220 0%, #f0273b 38%, #d49a32 72%, #ffe39a 100%);
+  box-shadow: 0 0 18px rgba(230,35,50,.4), 0 0 25px rgba(212,175,55,.28);
+}
+@keyframes mps-gold-red-beat {
+  0%, 100% { background-position: 0% 50%; box-shadow: 0 0 0 1px rgba(239,195,87,.22), 0 0 12px rgba(220,25,43,.26), 0 0 18px rgba(212,175,55,.12); }
+  50% { background-position: 100% 50%; box-shadow: 0 0 0 5px rgba(239,195,87,0), 0 0 21px rgba(220,25,43,.48), 0 0 27px rgba(212,175,55,.25); }
+}
+@keyframes mps-finger-press {
+  0%, 100% { transform: translateY(-3px) scale(1); }
+  45%, 60% { transform: translateY(7px) scale(.92); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-gold[href="join.html"], .join-cta, #joinForm button[type="submit"], #step2Next a.btn-gold,
+  .btn-gold[href="join.html"]::before, .join-cta::before, #joinForm button[type="submit"]::before, #step2Next a.btn-gold::before {
+    animation: none !important;
+  }
+}
