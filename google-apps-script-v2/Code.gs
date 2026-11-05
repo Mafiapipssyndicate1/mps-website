@@ -86,9 +86,9 @@ function doPost(e) {
       sheet.appendRow([id, new Date(), nickname, telegram, country, goal, note,
         "Menunggu verifikasi", "", "", "", "", "", "", "Belum ada konfirmasi", "", "", new Date()]);
       formatMemberSheet_(sheet);
-      sendTelegram_("🆕 PENDAFTARAN MEMBER MPS\\nNama: " + nickname +
-        "\\nTelegram: " + telegram + "\\nNegara: " + country +
-        "\\nTujuan: " + goal + "\\nID: " + id);
+      sendTelegram_("🆕 PENDAFTARAN MEMBER MPS\nNama: " + nickname +
+        "\nTelegram: " + telegram + "\nNegara: " + country +
+        "\nTujuan: " + goal + "\nID: " + id);
       return json_({ ok: true, status: "Pendaftaran tersimpan", memberId: id });
     }
 
@@ -129,10 +129,10 @@ function doPost(e) {
     ]]);
     sheet.getRange(row, 17, 1, 2).setValues([[new Date(), new Date()]]);
     formatMemberSheet_(sheet);
-    sendTelegram_("💳 KONFIRMASI DEPOSIT MPS\\nNama: " + name +
-      "\\nTelegram: " + telegram + "\\nLogin MT5: " + login +
-      "\\nDeposit: Rp" + amount.toLocaleString("id-ID") +
-      "\\nStatus: Menunggu verifikasi");
+    sendTelegram_("💳 KONFIRMASI DEPOSIT MPS\nNama: " + name +
+      "\nTelegram: " + telegram + "\nLogin MT5: " + login +
+      "\nDeposit: Rp" + amount.toLocaleString("id-ID") +
+      "\nStatus: Menunggu verifikasi");
     return json_({ ok: true, status: "Konfirmasi tersimpan dan menunggu verifikasi" });
   } catch (err) {
     if (uploadedFile) { try { uploadedFile.setTrashed(true); } catch (ignored) {} }
