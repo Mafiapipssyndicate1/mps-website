@@ -769,7 +769,7 @@ a.btn[href="deposit-confirmation.html"],
   position: relative;
   isolation: isolate;
   overflow: hidden !important;
-  contain: paint;
+  /* overflow clipping keeps the shine inside without clipping the button glow */
 }
 a.btn[href="join.html"]::after,
 a.btn[href="#joinForm"]::after,
