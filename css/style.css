@@ -757,3 +757,71 @@ li {
     padding: 11px 15px;
   }
 }
+
+
+/* MPS CTA SHINE FIX — keep the moving highlight clipped to the button */
+a.btn[href="join.html"],
+a.btn[href="#joinForm"],
+a.btn[href="deposit-confirmation.html"],
+#joinForm button.btn[type="submit"],
+.join-cta,
+#step2Next a.btn-gold {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden !important;
+  contain: paint;
+}
+a.btn[href="join.html"]::after,
+a.btn[href="#joinForm"]::after,
+a.btn[href="deposit-confirmation.html"]::after,
+#joinForm button.btn[type="submit"]::after,
+.join-cta::after,
+#step2Next a.btn-gold::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -55%;
+  left: 0;
+  width: 38%;
+  height: 210%;
+  transform: translateX(-160%) rotate(22deg);
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.04) 25%, rgba(255,255,255,.48) 50%, rgba(255,255,255,.04) 75%, transparent 100%);
+  animation: mps-cta-contained-shine 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes mps-cta-contained-shine {
+  0%, 18% { transform: translateX(-160%) rotate(22deg); }
+  72%, 100% { transform: translateX(390%) rotate(22deg); }
+}
+/* Keep the small pointer visible inside the clipped button. */
+a.btn[href="join.html"]::before,
+a.btn[href="#joinForm"]::before,
+a.btn[href="deposit-confirmation.html"]::before,
+#joinForm button.btn[type="submit"]::before,
+.join-cta::before,
+#step2Next a.btn-gold::before {
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  animation: mps-cta-pointer-tap 1.55s ease-in-out infinite;
+}
+@keyframes mps-cta-pointer-tap {
+  0%, 100% { transform: translateY(-50%) scale(1); }
+  45%, 60% { transform: translateY(calc(-50% + 3px)) scale(.9); }
+}
+@media (prefers-reduced-motion: reduce) {
+  a.btn[href="join.html"]::after,
+  a.btn[href="#joinForm"]::after,
+  a.btn[href="deposit-confirmation.html"]::after,
+  #joinForm button.btn[type="submit"]::after,
+  .join-cta::after,
+  #step2Next a.btn-gold::after,
+  a.btn[href="join.html"]::before,
+  a.btn[href="#joinForm"]::before,
+  a.btn[href="deposit-confirmation.html"]::before,
+  #joinForm button.btn[type="submit"]::before,
+  .join-cta::before,
+  #step2Next a.btn-gold::before {
+    animation: none !important;
+  }
+}
