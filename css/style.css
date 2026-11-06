@@ -405,3 +405,89 @@ a.btn[href="deposit-confirmation.html"]::before,
   a.btn[href="deposit-confirmation.html"]::before, #joinForm button.btn[type="submit"]::before,
   .join-cta::before, #step2Next a.btn-gold::before { animation: none !important; }
 }
+
+
+/* MPS TYPOGRAPHY POLISH — consistent, compact and easier to read */
+body {
+  font-size: 14px;
+  line-height: 1.72;
+  letter-spacing: .08px;
+}
+p {
+  font-size: 14px;
+  line-height: 1.78;
+  margin-top: 0;
+  margin-bottom: 13px;
+}
+li {
+  font-size: 13.5px;
+  line-height: 1.72;
+  margin-bottom: 6px;
+}
+.content {
+  max-width: 780px;
+}
+.content p,
+.content li,
+.card p,
+.page-head p,
+.section-head p,
+.desc,
+.muted {
+  font-size: 13.5px;
+  line-height: 1.78;
+}
+.content h2 {
+  font-size: clamp(19px, 2.5vw, 23px);
+  line-height: 1.35;
+  margin: 26px 0 10px;
+}
+.content h3,
+.card h3 {
+  font-size: 15px;
+  line-height: 1.4;
+  margin: 18px 0 8px;
+}
+.content ul,
+.content ol {
+  padding-left: 21px;
+  margin: 8px 0 18px;
+}
+.content li:last-child {
+  margin-bottom: 0;
+}
+.notice {
+  font-size: 13px;
+  line-height: 1.72;
+  padding: 15px 18px;
+}
+.card {
+  padding: 24px;
+}
+.card p {
+  margin-bottom: 0;
+}
+.page-head p {
+  max-width: 660px;
+  margin: 10px auto 0;
+}
+.section-head {
+  max-width: 680px;
+}
+.footer-disclaimer {
+  font-size: 10px;
+  line-height: 1.75;
+}
+@media (max-width: 620px) {
+  body { font-size: 13.5px; line-height: 1.7; }
+  p, .content p, .content li, .card p, .page-head p,
+  .section-head p, .desc, .muted {
+    font-size: 13px;
+    line-height: 1.75;
+  }
+  li { font-size: 13px; }
+  .content h2 { font-size: 19px; margin-top: 23px; }
+  .content h3, .card h3 { font-size: 14px; }
+  .notice { font-size: 12.5px; padding: 13px 15px; }
+  .card { padding: 20px; }
+}
