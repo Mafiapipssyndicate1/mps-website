@@ -193,3 +193,46 @@ The owner clarified that the current member rows are fictional/test records and 
 ## Current implementation status
 
 This document records requirements and acceptance tests only. No production source, live Apps Script, deployment, spreadsheet, Drive file, bot, webhook, or public website has been changed by this update.
+
+
+## Security audit checkpoint — 2026-11-06
+
+This is a static review of repository files on `main`, not a penetration test and not an inspection of the live Apps Script deployment.
+
+### Public-site findings
+
+- The GitHub Pages repository contains multiple historical backend source files: `google-apps-script/Code.gs` and `google-apps-script-v2/Code.gs`. Both contain storage-setup routines that can create new spreadsheets/folders when Script Properties are missing. They must be treated as archival/reference code, not run against the active project.
+- The public `config.js` exposes the Apps Script Web App URL. This is expected for a browser-facing endpoint; the URL must be treated as public, never as an access control.
+- `member-portal.html` links the same Apps Script URL for registration/deposit, Learning, dashboard, and admin. The UI links are navigation only; each backend API must independently authenticate and authorize the caller.
+- The public `join.html` and `deposit-confirmation.html` still contain legacy forms and text describing username-based verification. `js/join.js` and `js/deposit.js` hide those forms and redirect to the portal. This creates stale/contradictory public copy and should be reconciled after the live v4.2.2 UI is verified.
+- The legacy `google-apps-script/Code.gs` enforces Rp1,500,000 server-side, while current public pages and owner decision use Rp1,000,000. Never deploy this legacy source; reconcile the active server validator to Rp1,000,000.
+- `privacy.html` says data may be forwarded to Telegram and that Drive/Sheets access must be restricted. Confirm actual permissions on the active folder and spreadsheet; static code cannot verify Google sharing settings.
+- `js/main.js` uses textContent for configurable brand/rebate copy and does not show obvious unsafe HTML insertion in the inspected portions. This is a limited source review, not proof that every page/script is XSS-free.
+- The static site contains no authentication boundary of its own. VIP content and sensitive datasets must remain server-side; hiding a menu or page in JavaScript is not authorization.
+
+### Immediate release blockers
+
+1. Identify and freeze the exact live Apps Script project/deployment/version. Do not use either repository legacy Code.gs as a replacement for v4.2.2.
+2. Inspect every public API action in active v4.2.2 for server-side role/session checks. Deny by default; member sessions must never invoke admin functions.
+3. Close the legacy direct-deposit path until Telegram identity binding is confirmed server-side. A username is not proof of Telegram account ownership.
+4. Ensure PINs are never returned to browser JavaScript or admin-page toast/clipboard. Send only to the verified private Telegram chat after approval.
+5. Confirm private Drive proof-file permissions and restrict spreadsheet/folder sharing to the owner/admins.
+6. Ensure admin login rate limits do not let anonymous callers globally lock out the real admin, and ensure sessions can expire and be revoked.
+7. Confirm bot token exists only in Script Properties; do not print values in logs or chat. Choose one Telegram update mode and test delivery before switching.
+8. Do not expose full member details, MT5 logins, deposit amounts, proof URLs, or Telegram identities in public ticker, dashboard, or page source.
+9. Remove/retire stale legacy backend setup instructions from public repository documentation once the current architecture is confirmed.
+10. Establish a known-good backup/export and recovery procedure before any production change.
+
+### Safe test plan (non-destructive)
+
+- Use a separate test deployment/project and test data, not the active member sheet or production bot.
+- Attempt direct calls as: anonymous visitor, pending member, rejected member, approved member, and admin.
+- Test forged member IDs, altered role/status values, expired/replayed sessions, wrong PINs, repeated requests, oversized uploads, invalid MIME/signature, and direct Learning/Pulse URLs.
+- Verify that all rejected attempts fail server-side and do not disclose whether a private member record exists.
+- Verify admin-only changes (approve/reject, PIN issue, ads/news/ticker, content upload, VIP invite) reject non-admin sessions.
+- Run a mobile Android end-to-end pass for public pages, registration, Telegram binding, deposit, approval, PIN delivery, VIP invite, Learning, Pulse, and logout.
+- Do not run destructive scans, brute-force tests, denial-of-service tests, or tests against unrelated domains/third-party infrastructure.
+
+### Scope and result
+
+No live website, active Apps Script, deployment, spreadsheet, Drive folder, Script Properties, Telegram bot, webhook, or member record was changed. The only permitted workspace for this checkpoint is this review branch. A real security clearance cannot be issued until the active v4.2.2 source and live Google resource permissions are reviewed and controlled functional tests pass.
