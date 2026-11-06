@@ -122,3 +122,74 @@ Before release, test at least twice (first static cross-check, then controlled f
 10. Browser UI minimum, public website copy, admin validation, and server validator all show Rp1,000,000 consistently.
 
 **Scope reminder:** this is documentation on the review branch only. No production code, spreadsheet, Drive files, Telegram configuration, or deployment has been changed.
+
+
+## Expanded owner requirements — 2026-11-06
+
+### A. Registration and Telegram identity binding
+
+The owner requires a strict two-stage member journey:
+
+1. A visitor submits the initial registration form. The backend saves the registration and returns a member ID. **This event must not notify the admin Telegram chat.**
+2. The site offers a **Connect Telegram** action tied to that member ID. The backend issues a random, opaque, single-use, short-lived linking challenge. The browser opens the official bot deep link (for example, `https://t.me/<bot_username>?start=<opaque_challenge>`).
+3. The member presses Start. The bot update must be processed server-side. The backend binds the Telegram numeric user/chat identity from Telegram's authenticated update to the member ID. Never accept a Telegram ID typed by the visitor, and never use a username as proof of identity.
+4. The deposit form stays locked until the backend confirms that the current member ID has a verified Telegram identity binding. A missing, expired, already-used, or mismatched challenge must fail closed and show a clear reconnect instruction.
+5. The member submits deposit details and proof. The server re-checks the member ID ↔ Telegram identity binding, validates the minimum deposit of Rp1,000,000, stores the proof privately, updates the existing member row, and only then notifies the admin Telegram chat.
+6. Duplicate Telegram identity binding to another member must be rejected or routed to an explicit admin recovery process. A member must not be able to overwrite an existing binding by changing a username.
+
+Implementation constraints:
+- Preserve the existing 18-column `Database Member` schema unless a separately reviewed migration is approved. A durable identity mapping may use a dedicated `Telegram Identity` tab **inside the same existing spreadsheet**, not a new spreadsheet. Proposed fields: member ID, Telegram numeric user ID, private chat ID, username snapshot (display only), linked timestamp, status, and audit timestamps. Do not store raw link challenges; store a cryptographic hash, expiry, consumed timestamp, and attempt metadata.
+- Keep admin notification chat ID separate from each member's private chat ID. Never reuse one global chat ID for all member messages.
+- The bot must process only private-chat `/start <challenge>` messages for account linking. Validate Telegram update structure, challenge expiry/one-time use, replay attempts, and member state.
+- Choose exactly one update-delivery strategy for the bot: webhook or polling. Do not run `getUpdates` while a webhook is active. If polling is used, persist the update offset and ensure only one poller runs. If webhook is used, verify that the Apps Script endpoint is compatible with Telegram webhook delivery before enabling it; do not assume redirect behavior works.
+- The bot token stays in Script Properties. Never include it in website JavaScript, HTML, GitHub, logs, or user-facing errors.
+
+### B. Approval, member access, and VIP invitation
+
+After the admin approves a valid deposit:
+- Mark the member approved using the exact existing status vocabulary, and record the admin action.
+- Issue/retain a secure PIN without exposing it in public responses.
+- Grant Learning and Market Pulse access through server-side entitlements; direct endpoint calls must enforce the same checks.
+- Create a private VIP invite link using Telegram's `createChatInviteLink` only after confirming the bot is an administrator of the VIP group with permission to invite users.
+- Prefer a one-member, short-expiry invite. Send it to the bound private chat ID, not to a username or admin chat.
+- A Telegram user must tap the invite; the bot cannot silently add them based on an ID.
+- If invite creation or delivery fails, keep the member's approved status explicit but show a retryable invite-delivery failure in the admin dashboard. Do not report that the VIP invite was sent when it was not.
+- Rejection never grants Learning, Pulse, or VIP access.
+
+### C. Website platform features requested for the next build
+
+These are first-class website features, not ad-hoc HTML edits:
+- **Ad placements:** admin-managed advertiser, creative/image, destination URL, placement, start/end dates, active/paused status, and click/impression reporting. Ads require admin approval. Add clear "Iklan" labeling. Validate destinations and sanitize creatives; never permit arbitrary advertiser JavaScript.
+- **Running ticker:** a configurable ticker for privacy-safe events such as "Pendaftaran member baru diterima" or "Member MPS-•••••• telah disetujui". Do not expose names, Telegram IDs/usernames, MT5 logins, deposit amounts, proof links, or PINs. Prefer aggregate/anonymized events and allow admin disable/pause.
+- **News & economic calendar:** admin-curated or trusted-source-fed events for NFP, FOMC, PPI, CPI, and other material releases. Store timezone explicitly and display Asia/Jakarta (WIB), event impact, source, scheduled time, actual result, forecast, previous value, and last-updated time when available. Clearly distinguish scheduled events from confirmed results; handle source outages and revisions.
+- **Announcements and maintenance notices:** admin can draft, schedule, publish, expire, and pin a banner/ticker notice. Maintenance notices need start/end time in WIB, expected impact, and status (scheduled / ongoing / completed). Do not hardcode dates into HTML.
+- **Admin dashboard:** one authenticated control panel for member queue, Telegram-link state, deposit review, PIN reissue, VIP invite retry/revoke, Learning materials, Market Pulse, ads, ticker, news/events, and announcements. Enforce role checks server-side for every action and maintain an audit trail.
+
+### D. Acceptance tests added for the complete member journey
+
+1. Initial registration stores one member record and sends **no** admin Telegram message.
+2. An unlinked member cannot submit deposit details, including by calling the endpoint directly.
+3. A valid deep-link challenge links the Telegram numeric ID to the intended member only.
+4. An expired, reused, altered, or wrong-member challenge is rejected.
+5. A Telegram ID already bound to another member cannot be linked again without an admin recovery action.
+6. Editing a Telegram username does not change the bound numeric identity.
+7. Only after a successful deposit submission is an admin Telegram notification sent.
+8. Rp999,999 is rejected server-side; Rp1,000,000 is accepted if all other checks pass.
+9. Pending/rejected members cannot access Learning, Pulse, or VIP invitation endpoints.
+10. Approval grants the correct entitlements and sends the PIN/invite only to the linked private chat.
+11. VIP invite creation failure is visible and retryable; no false success message is shown.
+12. One-member invite limit and expiry are enforced where Telegram supports them.
+13. Ticker output never exposes personal, trading-account, proof, or authentication data.
+14. Ads are admin-approved, date-bounded, labeled, and cannot inject arbitrary scripts.
+15. News/event times render correctly in WIB and distinguish forecasts from actual releases.
+16. Maintenance/announcement scheduling, expiration, and mobile rendering work.
+17. Admin actions are logged; unauthenticated and member-level sessions cannot administer content.
+18. The complete flow is tested on Android mobile, with poor network, duplicate taps, retries, and stale sessions.
+
+## Test-data reset boundary
+
+The owner clarified that the current member rows are fictional/test records and may be replaced before public launch. This permission applies to test records only. It does **not** automatically authorize deletion/recreation of the active spreadsheet, Drive proof folder, Script Properties, bot token, Telegram webhook, Apps Script deployment, or GitHub production branch. First identify the exact resources used by the active deployment; then propose a test-data cleanup that preserves system configuration and any real records.
+
+## Current implementation status
+
+This document records requirements and acceptance tests only. No production source, live Apps Script, deployment, spreadsheet, Drive file, bot, webhook, or public website has been changed by this update.
