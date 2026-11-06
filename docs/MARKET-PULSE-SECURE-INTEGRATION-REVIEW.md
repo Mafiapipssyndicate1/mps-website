@@ -73,3 +73,14 @@ Target architecture:
 ## Current change boundary
 
 This branch is a review workspace. No production files were edited. No branch has been merged. No deployment, database setup, migration, or Telegram setup function has been run.
+
+
+## Additional frontend and admin-account findings
+
+The owner/admin Google account identified by the user is `ndhisolasi.music@gmail.com`. This is an account reference supplied by the user, not proof that an email address alone is a secure admin credential. Do not hard-code an admin password, PIN, or session secret in public website files.
+
+The public frontend currently labels the join/deposit portal as system v4.1, while the repository backend file is explicitly labeled v2. The inspected `config.js` points both join and deposit forms to the same Apps Script Web App endpoint. `js/join.js` and `js/deposit.js` hide the legacy forms and redirect visitors to `member-portal.html`; they do not themselves submit registration or deposit data.
+
+The portal's copy describes an ID Member + PIN process and claims backend session verification, but those functions are absent from the inspected v2 backend. This is a version/implementation mismatch that must be resolved against the actual deployed Apps Script project before relying on those access claims.
+
+The public `config.js` contains the Web App URL. That URL is not a secret and must be treated as publicly callable. Security must come from server-side validation for every protected action, not from hiding the URL or relying on the website UI.
