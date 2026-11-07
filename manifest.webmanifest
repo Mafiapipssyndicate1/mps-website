@@ -1,0 +1,14 @@
+{
+  "id": "./",
+  "name": "Market Psychology Society",
+  "short_name": "MPS",
+  "description": "Market Psychology Society — Trade with Discipline.",
+  "lang": "id-ID",
+  "start_url": "./index.html?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#080b12",
+  "theme_color": "#080b12",
+  "icons": [{"src":"./assets/mps-app-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
