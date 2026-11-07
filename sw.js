@@ -1,6 +1,6 @@
 const CACHE_NAME='mps-public-shell-v1';
 const BASE=self.registration.scope;
-const CORE_ASSETS=['offline.html','css/style.css','assets/logo.svg','assets/favicon.svg','assets/mps-app-icon.svg'].map(path=>new URL(path,BASE).href);
+const CORE_ASSETS=['offline.html','css/style.css','assets/logo.svg','assets/favicon.svg','assets/mps-app-icon.svg','assets/mps-app-icon-512.png'].map(path=>new URL(path,BASE).href);
 const OFFLINE_URL=new URL('offline.html',BASE).href;
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(CORE_ASSETS)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE_NAME).map(key=>caches.delete(key)))).then(()=>self.clients.claim()));});
